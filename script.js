@@ -1,5 +1,5 @@
 const apiUrl = "https://api.sampleapis.com/beers/ale";
-let allBeers = []; // Dito itatago ang data para sa search
+let allBeers = []; 
 
 async function fetchBeers() {
     const beerContainer = document.getElementById('beer-container');
@@ -14,16 +14,17 @@ async function fetchBeers() {
         loader.classList.add('d-none');
     } catch (error) {
         console.error("Error:", error);
-        loader.innerHTML = "<p class='text-danger'>Hindi ma-load ang data. I-refresh ang page.</p>";
+        "Failed to load data. Please refresh the page."
+        loader.innerHTML = "<p class='text-danger'>Failed to load data. Please refresh the page.</p>";
     }
 }
 
 function displayBeers(beers) {
     const beerContainer = document.getElementById('beer-container');
-    beerContainer.innerHTML = ""; // Linisin ang container
+    beerContainer.innerHTML = ""; r
 
     beers.forEach(beer => {
-        // Minsan may mga sirang image sa API, kaya maglalagay tayo ng placeholder
+        // Some images in the API are broken, so we use a placeholder
         const imgUrl = beer.image ? beer.image : 'https://via.placeholder.com/150?text=No+Image';
         
         const cardHtml = `
@@ -45,7 +46,7 @@ function displayBeers(beers) {
     });
 }
 
-// Search Functionality
+
 document.getElementById('searchInput').addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     const filteredBeers = allBeers.filter(beer => 
