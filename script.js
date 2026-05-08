@@ -1,4 +1,3 @@
-96% of storage used … If you run out, you can't create, edit, and upload files. Get 30 GB for ₱10 for 2 months ₱49.
 const apiUrl = 'https://api.sampleapis.com/beers/ale';
 const container = document.getElementById('beer-container');
 
