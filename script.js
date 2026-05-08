@@ -1,59 +1,57 @@
-const apiUrl = "https://api.sampleapis.com/beers/ale";
-let allBeers = []; 
+96% of storage used … If you run out, you can't create, edit, and upload files. Get 30 GB for ₱10 for 2 months ₱49.
+const apiUrl = 'https://api.sampleapis.com/beers/ale';
+const container = document.getElementById('beer-container');
 
-async function fetchBeers() {
-    const beerContainer = document.getElementById('beer-container');
-    const loader = document.getElementById('loader');
-
-    try {
-        const response = await fetch(apiUrl);
-        allBeers = await response.json();
-        
-        displayBeers(allBeers);
-        
-        loader.classList.add('d-none');
-    } catch (error) {
-        console.error("Error:", error);
-        "Failed to load data. Please refresh the page."
-        loader.innerHTML = "<p class='text-danger'>Failed to load data. Please refresh the page.</p>";
-    }
+function getCountry(id) {
+    const countries = ["Belgium", "USA", "Germany", "United Kingdom", "Netherlands", "Ireland", "Canada", "Australia"];
+    return countries[id % countries.length];
 }
 
-function displayBeers(beers) {
-    const beerContainer = document.getElementById('beer-container');
-    beerContainer.innerHTML = ""; r
-
-    beers.forEach(beer => {
-        // Some images in the API are broken, so we use a placeholder
-        const imgUrl = beer.image ? beer.image : 'https://via.placeholder.com/150?text=No+Image';
+async function getBeers() {
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
         
-        const cardHtml = `
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card shadow-sm">
-                    <img src="${imgUrl}" class="card-img-top beer-img" alt="${beer.name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">${beer.name}</h5>
-                        <p class="card-text text-muted small">${beer.price}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="rating">⭐ ${beer.rating.average.toFixed(1)}</span>
-                            <span class="badge bg-warning text-dark">${beer.rating.reviews} reviews</span>
+        container.innerHTML = '';
+
+        const limitedData = data.slice(0, 20);
+
+        limitedData.forEach(beer => {
+            const country = getCountry(beer.id);
+            const col = document.createElement('div');
+            col.className = 'col-12 col-sm-6 col-md-4 col-lg-3';
+
+            col.innerHTML = `
+                <div class="card h-100 shadow-sm">
+                    <img src="${beer.image}" class="card-img-top" alt="${beer.name}" 
+                         onerror="this.src='https://via.placeholder.com/200x250?text=Beer+Image'">
+                    <div class="card-body d-flex flex-column">
+                        <div class="country-tag mb-1">
+                            📍 ${country}
+                        </div>
+                        <h5 class="card-title h6 fw-bold mb-2">${beer.name}</h5>
+                        <p class="price-tag mb-3">${beer.price || '$0.00'}</p>
+                        
+                        <div class="mt-auto pt-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="rating-badge">⭐ ${beer.rating.average ? beer.rating.average.toFixed(1) : '0.0'}</span>
+                                <small class="text-muted" style="font-size: 0.7rem;">${beer.rating.reviews} reviews</small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-        beerContainer.innerHTML += cardHtml;
-    });
+            `;
+            container.appendChild(col);
+        });
+    } catch (error) {
+        container.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-danger text-center">
+                    Gagal sa pagkuha ng data. Pakisuri ang iyong internet connection.
+                </div>
+            </div>`;
+        console.error("Error:", error);
+    }
 }
 
-
-document.getElementById('searchInput').addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredBeers = allBeers.filter(beer => 
-        beer.name.toLowerCase().includes(searchTerm)
-    );
-    displayBeers(filteredBeers);
-});
-
-// Run
-fetchBeers();
+getBeers();
