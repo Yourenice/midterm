@@ -1,27 +1,46 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+}
+
 .card {
+    transition: all 0.3s ease-in-out;
     border: none;
-    transition: transform 0.2s;
-    height: 100%;
+    border-radius: 20px;
 }
 
 .card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
 }
 
-.beer-img {
-    height: 200px;
-    object-fit: contain; /* Para hindi ma-stretch ang bote */
-    padding: 15px;
-    background-color: #f8f9fa;
+.card-img-top {
+    height: 220px;
+    object-fit: contain;
+    padding: 25px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.country-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rating-badge {
+    background-color: #ffc107;
+    color: #000;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
 }
 
 .price-tag {
-    font-weight: bold;
     color: #198754;
-}
-
-.rating {
-    color: #ffc107;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
